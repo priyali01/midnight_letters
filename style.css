@@ -7,3 +7,5 @@ body{transition:--pink .3s}
 .letter-card.expanded .card-preview{display:block;-webkit-line-clamp:unset;overflow:visible;color:var(--ink)}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+
+:where(a,button,input,textarea):focus-visible{outline:2px solid var(--lilac);outline-offset:3px}

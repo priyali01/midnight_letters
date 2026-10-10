@@ -15,8 +15,8 @@ Use this file to document your **actual** use of GitHub Copilot for the Global H
 |---|---|---|---|---|
 | 1 | Explain how this Midnight Letters app works. Walk me through the HTML structure, CSS layout, and JavaScript data flow. Do not change any files yet. Point out the main functions and how localStorage is used. | Explained the HTML sections, responsive CSS layout, JavaScript event flow, archive actions, and localStorage behavior. | No files changed. | Inspected the HTML, CSS, JavaScript, README, and activity-log files; no runtime test was claimed. |
 | 2 | Connect this folder to GitHub and add it as an initial commit for now. | Initialized Git, created the initial commit, configured the `origin` remote, and pushed the `main` branch. | Kept the existing README instead of appending a duplicate heading. Added all non-ignored project files to the initial commit. | Verified that `main` tracks `origin/main`, the commit exists on both local and remote branches, and the working tree is clean. |
-| 3 | | | | |
-| 4 | | | | |
+| 3 | Review this app for usability and accessibility. Focus on keyboard navigation, visible focus, form validation, mobile layout, and whether the privacy explanation is accurate. List the most important improvements before editing anything. | Identified consistent visible focus styling as the highest-priority improvement, along with validation, focus management, mobile, and privacy follow-ups. | No files changed during the review. | Inspected the HTML, CSS, JavaScript, and README. |
+| 4 | Implement the highest-priority accessibility improvement you identified. Keep the current visual style and avoid adding a framework or dependencies. Explain each change you make. | Strengthened the existing keyboard-only focus treatment for links, buttons, inputs, and the textarea. | Added a two-pixel lilac outline with a three-pixel offset using existing CSS variables; no framework or dependency was added. | Ran `git diff --check` and reviewed the resulting CSS diff. |
 
 ## What I learned
 
