@@ -54,10 +54,45 @@ This project is suitable for the Global Hack Week challenge **“Use GitHub Copi
 
 Run `index.html` and take a screenshot showing the hero section and the writing form, or write a short sample letter and show it in the archive. Do not include personal/private writing in a public screenshot.
 
+## Demo screenshots
+
+These screenshots show the current visual design and archive experience:
+
+![Midnight Letters home](demo_1.png)
+
+![Midnight Letters writing space](demo_2.png)
+
+![Midnight Letters archive](demo_3.png)
+
+## Beginner challenge test checklist
+
+The checks below record what was exercised in the browser during the latest review. Unchecked items still need manual confirmation on your own device.
+
+- [x] Open `index.html` in a desktop browser.
+- [ ] Open the page at a narrow/mobile width and confirm there is no unwanted horizontal scrolling.
+- [x] Rotate writing prompts several times.
+- [x] Select Longing, Healing, Hope, Unsent, and Custom; verify the active state changes.
+- [x] Try submitting an empty letter and confirm the validation message appears.
+- [x] Save a letter, refresh the page, and verify it remains in the archive.
+- [ ] Download one letter and open the downloaded text file.
+- [ ] Export all letters and open the downloaded archive.
+- [x] Delete a letter and verify it is gone after refresh.
+- [x] Use the keyboard to reach a control and confirm visible focus appears.
+- [ ] Add one, two, and three photographs; verify previews, removal, saving, editing, and missing-photo fallback.
+- [ ] Verify an oversized image and a non-image file receive clear validation messages.
+- [ ] Enable reduced-motion preferences and confirm decorative motion is suppressed.
+
+## Claims to verify yourself before submission
+
+- The download and export buttons create files that open correctly in your browser or operating system.
+- The screenshots represent the final version and do not reveal private writing.
+- The layout is comfortable at the phone and tablet widths you plan to show.
+- Browser site-data clearing removes the local letter archive and IndexedDB photographs as described in the privacy note.
+- Photographs remain local and are not sent to an external server; the page does load Google Fonts from an external service.
+- The app behaves as expected in the browser you will use for your submission.
+
 ## Possible future improvements
 
-- Edit an existing saved letter.
-- Add search and mood filters to the archive (a good first real Copilot task).
 - Add a light theme toggle.
 - Add a downloadable Markdown export.
 - Add a confirmation before exporting or clearing all data.
