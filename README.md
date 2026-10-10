@@ -58,11 +58,11 @@ Run `index.html` and take a screenshot showing the hero section and the writing 
 
 These screenshots show the current visual design and archive experience:
 
+![Midnight Letters archive](demo_3.png)
+
 ![Midnight Letters home](demo_1.png)
 
 ![Midnight Letters writing space](demo_2.png)
-
-![Midnight Letters archive](demo_3.png)
 
 ## Features
 
