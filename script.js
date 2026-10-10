@@ -80,7 +80,10 @@ function updateWordCount() {
 }
 
 function formatDate(value) {
-  return new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? 'Date unavailable'
+    : new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
 }
 
 function escapeText(value) {
@@ -202,9 +205,10 @@ lettersGrid.addEventListener('click', event => {
   if (!letter) return;
   if (button.dataset.action === 'delete') {
     if (!window.confirm('Delete this letter from this browser? This cannot be undone.')) return;
-    saveLetters(letters.filter(item => item.id !== letter.id));
-    renderLetters();
-    showToast('Letter removed from your archive.');
+    if (saveLetters(letters.filter(item => item.id !== letter.id))) {
+      renderLetters();
+      showToast('Letter removed from your archive.');
+    }
   }
   if (button.dataset.action === 'download') {
     const content = `${letter.title || 'Untitled feeling'}\nMood: ${letter.mood}\nDate: ${formatDate(letter.createdAt)}\n\n${letter.body}\n`;
