@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#100d20" />
+  <meta name="description" content="A quiet little corner for the words you never sent." />
+  <title>Midnight Letters — words that stayed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Midnight Letters home"><span class="brand-mark">✳</span> midnight letters</a>
+    <span class="top-note"><span class="live-dot"></span> A little space to feel</span>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="eyebrow"><span>01</span><span class="eyebrow-line"></span><span>THE UNSENT COLLECTION</span></div>
+      <h1>Some words are<br />meant to <em>stay here.</em></h1>
+      <p class="hero-copy">For the things you almost said, the feelings you can't quite name, and the letters that only needed somewhere to land.</p>
+      <a class="scroll-cue" href="#write"><span class="scroll-icon">↓</span> leave something here</a>
+      <div class="moon-art" aria-hidden="true"><div class="moon"></div><span class="star star-a">✳</span><span class="star star-b">·</span><span class="star star-c">✦</span><span class="star star-d">·</span><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span></div>
+      <div class="hero-index">VOL. 01 <span>·</span> AFTER DARK</div>
+    </section>
+
+    <section class="prompt-section" aria-labelledby="prompt-title">
+      <div class="section-label"><span>02 / A SMALL PROMPT</span><span>WHEN WORDS FEEL FAR AWAY</span></div>
+      <div class="prompt-card">
+        <div class="prompt-symbol" aria-hidden="true">✧</div>
+        <div class="prompt-content"><p class="micro-label">A THOUGHT TO BEGIN WITH</p><h2 id="prompt-title">You don't have to send it.</h2><p id="prompt-text">What would you say if you knew you wouldn't be interrupted?</p></div>
+        <button class="icon-button" id="new-prompt" type="button" aria-label="Show another writing prompt" title="Another prompt">↻</button>
+      </div>
+    </section>
+
+    <section class="write-section" id="write" aria-labelledby="write-title">
+      <div class="section-label"><span>03 / YOUR LETTER</span><span>NO AUDIENCE. NO PRESSURE.</span></div>
+      <div class="write-layout">
+        <div class="write-intro"><p class="micro-label">DEAR, WHOEVER YOU NEED</p><h2 id="write-title">Let it out.<br /><em>Leave it here.</em></h2><p>This space is yours. Write a little or write everything. Your letter stays in this browser unless you choose to download it.</p><div class="privacy-note"><span>⌁</span><span><strong>Private by design</strong><br />Letters are saved only on this device.</span></div></div>
+        <form class="letter-form" id="letter-form">
+          <label for="letter-title">GIVE THIS FEELING A NAME <span>(OPTIONAL)</span></label>
+          <input id="letter-title" name="title" maxlength="80" placeholder="The things I never said…" autocomplete="off" />
+          <label for="mood">WHAT DOES IT FEEL LIKE?</label>
+          <div class="mood-picker" role="group" aria-label="Choose a mood">
+            <button class="mood active" type="button" data-mood="Longing" aria-pressed="true">☾ <span>longing</span></button>
+            <button class="mood" type="button" data-mood="Healing" aria-pressed="false">✿ <span>healing</span></button>
+            <button class="mood" type="button" data-mood="Hope" aria-pressed="false">✧ <span>hope</span></button>
+            <button class="mood" type="button" data-mood="Unsent" aria-pressed="false">♡ <span>unsent</span></button>
+          </div>
+          <div class="mood-line-wrap"><p class="mood-line" id="mood-line" aria-live="polite"></p><button class="text-button" id="new-line" type="button">reveal a line</button></div>
+          <label for="letter-body">YOUR WORDS <span>— TAKE YOUR TIME</span></label>
+          <textarea id="letter-body" name="body" rows="8" maxlength="5000" placeholder="Dear you,&#10;&#10;I don't know if I'll ever say this out loud, but…" required></textarea>
+          <div class="editor-meta"><span id="word-count">0 words</span><span>up to 5,000 characters</span></div>
+          <div class="form-actions"><button class="primary-button" type="submit"><span>Keep this letter</span><span aria-hidden="true">↗</span></button><button class="text-button" id="clear-letter" type="button">Start over</button></div>
+          <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="saved-section" aria-labelledby="saved-title">
+      <div class="section-label"><span>04 / YOUR LITTLE ARCHIVE</span><span id="saved-count">0 LETTERS KEPT</span></div>
+      <div class="archive-heading"><div><h2 id="saved-title">Things you <em>left here.</em></h2><p>Only visible to you, on this browser.</p></div><span class="archive-sparkle" aria-hidden="true">✳</span></div>
+      <div class="letters-grid" id="letters-grid"><div class="empty-state" id="empty-state"><span class="empty-icon">☾</span><p>No letters yet.</p><span>Your first one can begin above.</span></div></div>
+    </section>
+    <section class="closing-note"><span class="closing-star">✳</span><p>Not everything needs an answer.<br /><em>Some things just need a place to exist.</em></p><span class="closing-caption">MADE FOR THE QUIET HOURS</span></section>
+  </main>
+
+  <footer><a class="brand" href="#top"><span class="brand-mark">✳</span> midnight letters</a><span>Keep what you need. Release what you don't.</span><button id="download-all" class="footer-link" type="button">Export all letters ↗</button></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
