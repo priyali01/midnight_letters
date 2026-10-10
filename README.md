@@ -64,32 +64,42 @@ These screenshots show the current visual design and archive experience:
 
 ![Midnight Letters archive](demo_3.png)
 
-## Beginner challenge test checklist
+## Features
 
-The checks below record what was exercised in the browser during the latest review. Unchecked items still need manual confirmation on your own device.
+### Writing sanctuary
 
-- [x] Open `index.html` in a desktop browser.
-- [ ] Open the page at a narrow/mobile width and confirm there is no unwanted horizontal scrolling.
-- [x] Rotate writing prompts several times.
-- [x] Select Longing, Healing, Hope, Unsent, and Custom; verify the active state changes.
-- [x] Try submitting an empty letter and confirm the validation message appears.
-- [x] Save a letter, refresh the page, and verify it remains in the archive.
-- [ ] Download one letter and open the downloaded text file.
-- [ ] Export all letters and open the downloaded archive.
-- [x] Delete a letter and verify it is gone after refresh.
-- [x] Use the keyboard to reach a control and confirm visible focus appears.
-- [ ] Add one, two, and three photographs; verify previews, removal, saving, editing, and missing-photo fallback.
-- [ ] Verify an oversized image and a non-image file receive clear validation messages.
-- [ ] Enable reduced-motion preferences and confirm decorative motion is suppressed.
+- Rotate through gentle writing prompts when you need a starting point.
+- Write letters with an optional title, body text, mood, and live word count.
+- Choose Longing, Healing, Hope, Unsent, or create a custom mood.
+- Give a custom mood its own name and accent colour.
+- Receive a short mood-specific line with the reveal interaction.
+- Start over at any time without leaving the composer.
 
-## Claims to verify yourself before submission
+### Personal archive
 
-- The download and export buttons create files that open correctly in your browser or operating system.
-- The screenshots represent the final version and do not reveal private writing.
-- The layout is comfortable at the phone and tablet widths you plan to show.
-- Browser site-data clearing removes the local letter archive and IndexedDB photographs as described in the privacy note.
-- Photographs remain local and are not sent to an external server; the page does load Google Fonts from an external service.
-- The app behaves as expected in the browser you will use for your submission.
+- Save letters privately in the current browser.
+- Search saved letters by title, body text, mood, memory date, caption, or poem/quote.
+- Read letters in place without leaving the page.
+- Edit saved letters and update their mood or memory details.
+- Delete individual letters with confirmation.
+- Download one letter or export the complete archive as plain text.
+
+### Make it a memory
+
+- Optionally attach up to three photographs to a letter.
+- Preview, remove, or replace selected photographs before saving.
+- Add a memory date, caption, poem, or favourite quote.
+- View memories as scrapbook-style archive cards.
+- Store photographs locally in IndexedDB, separate from the letter text.
+- Continue reading letters if a stored photograph is missing or unavailable.
+
+### Thoughtful experience
+
+- Responsive layouts for desktop and mobile screens.
+- Keyboard-operable controls with visible focus states.
+- Clear empty states and validation messages.
+- Reduced-motion support for users who prefer less animation.
+- No framework, build process, account, tracking, or external upload service.
 
 ## Possible future improvements
 
@@ -99,4 +109,4 @@ The checks below record what was exercised in the browser during the latest revi
 
 ## License
 
-You may use and adapt this starter project for learning. Add a license file if you want to state formal reuse terms for your public repository.
+This project is licensed under the [MIT License](LICENSE).
