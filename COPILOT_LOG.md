@@ -4,24 +4,24 @@ Use this file to document your **actual** use of GitHub Copilot for the Global H
 
 ## Session details
 
-- Date:
-- Editor / environment:
-- GitHub Copilot enabled: Yes / No
-- Project repository URL:
+- Date: 2026-10-10
+- Editor / environment: VS Code with Copilot SDK
+- GitHub Copilot enabled: Yes
+- Project repository URL: https://github.com/priyali01/midnight_letters
 
 ## Interaction log
 
 | # | Prompt I actually sent | Copilot response / suggested change | What I accepted or changed | How I tested it |
 |---|---|---|---|---|
-| 1 | | | | |
-| 2 | | | | |
+| 1 | Explain how this Midnight Letters app works. Walk me through the HTML structure, CSS layout, and JavaScript data flow. Do not change any files yet. Point out the main functions and how localStorage is used. | Explained the HTML sections, responsive CSS layout, JavaScript event flow, archive actions, and localStorage behavior. | No files changed. | Inspected the HTML, CSS, JavaScript, README, and activity-log files; no runtime test was claimed. |
+| 2 | Connect this folder to GitHub and add it as an initial commit for now. | Initialized Git, created the initial commit, configured the `origin` remote, and pushed the `main` branch. | Kept the existing README instead of appending a duplicate heading. Added all non-ignored project files to the initial commit. | Verified that `main` tracks `origin/main`, the commit exists on both local and remote branches, and the working tree is clean. |
 | 3 | | | | |
 | 4 | | | | |
 
 ## What I learned
 
-- 
-- 
+- The app is a client-side writing archive using HTML, CSS, JavaScript, and browser localStorage.
+- The activity log should contain only prompts actually used and should be updated as work continues.
 
 ## Final verification
 
