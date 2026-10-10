@@ -23,6 +23,7 @@ const wordCount = document.querySelector('#word-count');
 const formMessage = document.querySelector('#form-message');
 const lettersGrid = document.querySelector('#letters-grid');
 const savedCount = document.querySelector('#saved-count');
+const letterSearch = document.querySelector('#letter-search');
 const toast = document.querySelector('#toast');
 let selectedMood = 'Longing';
 let toastTimer;
@@ -88,6 +89,10 @@ function escapeText(value) {
 
 function renderLetters() {
   const letters = loadLetters();
+  const query = letterSearch.value.trim().toLowerCase();
+  const filteredLetters = query
+    ? letters.filter(letter => [letter.title, letter.body, letter.mood].some(value => String(value || '').toLowerCase().includes(query)))
+    : letters;
   lettersGrid.innerHTML = '';
   savedCount.textContent = `${letters.length} ${letters.length === 1 ? 'LETTER' : 'LETTERS'} KEPT`;
   if (!letters.length) {
@@ -97,7 +102,14 @@ function renderLetters() {
     lettersGrid.appendChild(empty);
     return;
   }
-  letters.forEach(letter => {
+  if (!filteredLetters.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = '<span class="empty-icon">⌕</span><p>No matching letters.</p><span>Try a different title, word, or mood.</span>';
+    lettersGrid.appendChild(empty);
+    return;
+  }
+  filteredLetters.forEach(letter => {
     const card = document.createElement('article');
     card.className = 'letter-card';
     card.innerHTML = `
@@ -138,6 +150,7 @@ document.querySelector('#new-prompt').addEventListener('click', () => {
 });
 
 bodyInput.addEventListener('input', updateWordCount);
+letterSearch.addEventListener('input', renderLetters);
 
 form.addEventListener('submit', event => {
   event.preventDefault();

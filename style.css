@@ -9,3 +9,5 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
 
 :where(a,button,input,textarea):focus-visible{outline:2px solid var(--lilac);outline-offset:3px}
+.archive-tools{display:flex;align-items:center;gap:14px;margin:0 0 22px}.archive-tools label{font:9px var(--mono);letter-spacing:.12em;color:var(--faint);white-space:nowrap}.archive-tools input{max-width:360px;padding:10px 12px}.archive-tools input::-webkit-search-cancel-button{cursor:pointer}
+@media(max-width:520px){.archive-tools{display:block}.archive-tools label{display:block;margin-bottom:9px}.archive-tools input{max-width:none}}
