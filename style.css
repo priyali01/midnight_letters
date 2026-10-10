@@ -14,6 +14,7 @@ body[data-mood="Unsent"]{--mood-accent:#dca0c1;--mood-soft:#d9b0d0;--mood-haze:#
 .mood:hover,.mood.active{border-color:color-mix(in srgb,var(--mood-accent) 55%,transparent);background:color-mix(in srgb,var(--mood-accent) 10%,transparent)}
 .mood.active .mood-icon{color:var(--mood-accent)}
 .button-primary,.button-save{background:var(--mood-accent);transition:background 1s ease,transform .25s}
+.button-primary,.button-save{color:#fff}
 .button-primary:hover,.button-save:hover{background:color-mix(in srgb,var(--mood-accent) 78%,white)}
 .prompt-card:after{background:linear-gradient(90deg,transparent,var(--mood-accent),transparent)}
 .hero-orbit{animation:orbit-drift 16s ease-in-out infinite}
