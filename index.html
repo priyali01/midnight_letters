@@ -82,6 +82,11 @@
               <button class="mood mood-healing" type="button" data-mood="Healing" aria-pressed="false"><span class="mood-icon">✿</span><span>healing</span></button>
               <button class="mood mood-hope" type="button" data-mood="Hope" aria-pressed="false"><span class="mood-icon">✧</span><span>hope</span></button>
               <button class="mood mood-unsent" type="button" data-mood="Unsent" aria-pressed="false"><span class="mood-icon">♡</span><span>unsent</span></button>
+              <button class="mood mood-custom" type="button" data-mood="Custom" aria-pressed="false"><span class="mood-icon">✦</span><span>custom</span></button>
+            </div>
+            <div class="custom-mood-fields" id="custom-mood-fields" hidden>
+              <label for="custom-mood-name">NAME YOUR MOOD <span>(OPTIONAL)</span></label>
+              <div class="custom-mood-controls"><input id="custom-mood-name" type="text" maxlength="30" placeholder="quiet joy" /><label class="color-choice" for="custom-mood-color"><input id="custom-mood-color" type="color" value="#dca0aa" aria-label="Choose your custom mood color" /><span>choose a color</span></label></div>
             </div>
           </div>
           <div class="mood-line-wrap"><p class="mood-line" id="mood-line" aria-live="polite"></p><button class="text-button" id="new-line" type="button">reveal a line <span>↗</span></button></div>

@@ -24,6 +24,16 @@ body[data-mood="Unsent"]{--mood-accent:#dca0c1;--mood-soft:#d9b0d0;--mood-haze:#
 .prompt-card{animation:panel-arrive .8s ease both}
 .letter-form{animation:panel-arrive .9s .12s ease both}
 .line-reveal{animation:line-arrive .5s ease both}
+.custom-mood-fields{margin-top:14px;padding:13px;border:1px solid var(--line);background:#110d1d99;animation:panel-arrive .35s ease both}
+.custom-mood-fields label{display:block;font:9px var(--mono);letter-spacing:.12em;color:var(--muted)}
+.custom-mood-fields label span{color:var(--faint)}
+.custom-mood-controls{display:flex;gap:10px;margin-top:8px}
+.custom-mood-controls>input[type=text]{min-width:0;flex:1;border:1px solid var(--line);background:transparent;color:var(--ink);padding:9px 10px;font:13px var(--sans);outline:0}
+.custom-mood-controls>input[type=text]:focus-visible{border-color:var(--mood-accent)}
+.color-choice{display:flex!important;align-items:center;gap:7px;color:var(--muted)!important;letter-spacing:.04em!important;text-transform:none;font:11px var(--sans)!important;cursor:pointer}
+.color-choice input{width:31px;height:31px;padding:2px;border:1px solid var(--line);background:transparent;cursor:pointer}
+.letter-card .card-mood{color:var(--card-mood-color,var(--mood-accent))}
+.mood-custom.active{border-color:var(--mood-accent)}
 @keyframes orbit-drift{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(1.5deg)}}
 @keyframes orbit-spin{from{transform:rotate(-21deg)}to{transform:rotate(339deg)}}
 @keyframes orbit-spin-reverse{from{transform:rotate(53deg)}to{transform:rotate(-307deg)}}

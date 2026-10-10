@@ -9,6 +9,7 @@ Midnight Letters is a small, responsive writing space for unsent letters, privat
 - **Writing prompts:** rotate through gentle prompts when you need a starting point.
 - **Mood-aware UI:** picking longing, healing, hope, or unsent shifts the accent colour and reveals a short original line (with a *reveal a line* button).
 - **Mood tags:** each letter is saved with its mood.
+- **Custom moods:** choose your own mood name and accent colour for a letter.
 - **Read in place:** expand any saved letter to read it in full.
 - **Local archive:** save letters in your browser with `localStorage`.
 - **Download a letter:** export any saved letter as a `.txt` file.

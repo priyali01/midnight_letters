@@ -36,7 +36,11 @@ const memoryDate = document.querySelector('#memory-date');
 const memoryCaption = document.querySelector('#memory-caption');
 const memoryPoem = document.querySelector('#memory-poem');
 const memoryMessage = document.querySelector('#memory-message');
+const customMoodFields = document.querySelector('#custom-mood-fields');
+const customMoodName = document.querySelector('#custom-mood-name');
+const customMoodColor = document.querySelector('#custom-mood-color');
 let selectedMood = 'Longing';
+let selectedMoodColor = '';
 let toastTimer;
 let editingLetterId = null;
 let selectedPhotos = [];
@@ -195,6 +199,18 @@ function loadMemoryFields(letter) {
 function setMood(mood) {
   selectedMood = mood;
   document.body.dataset.mood = mood;
+  if (mood === 'Custom') {
+    selectedMoodColor = customMoodColor.value;
+    document.body.style.setProperty('--mood-accent', selectedMoodColor);
+    document.body.style.setProperty('--mood-soft', selectedMoodColor);
+    document.body.style.setProperty('--mood-haze', `${selectedMoodColor}40`);
+    customMoodFields.hidden = false;
+  } else {
+    document.body.style.removeProperty('--mood-accent');
+    document.body.style.removeProperty('--mood-soft');
+    document.body.style.removeProperty('--mood-haze');
+    customMoodFields.hidden = true;
+  }
   document.querySelectorAll('.mood').forEach(item => {
     const active = item.dataset.mood === mood;
     item.classList.toggle('active', active);
@@ -203,7 +219,7 @@ function setMood(mood) {
 }
 
 function revealLine() {
-  const options = moodLines[selectedMood].filter(line => line !== moodLine.textContent);
+  const options = (moodLines[selectedMood] || ['This feeling is yours to name.']).filter(line => line !== moodLine.textContent);
   moodLine.textContent = options[Math.floor(Math.random() * options.length)];
   moodLine.classList.remove('line-reveal');
   requestAnimationFrame(() => moodLine.classList.add('line-reveal'));
@@ -264,6 +280,8 @@ function renderLetters() {
       letter.title,
       letter.body,
       letter.mood,
+      letter.customMoodName,
+      letter.customMoodColor,
       letter.memory && letter.memory.date,
       letter.memory && letter.memory.caption,
       letter.memory && letter.memory.poem
@@ -289,7 +307,7 @@ function renderLetters() {
     const card = document.createElement('article');
     card.className = 'letter-card';
     card.innerHTML = `
-      <span class="card-mood">${escapeText(letter.mood || 'Unsent')}</span>
+      <span class="card-mood" ${letter.customMoodColor ? `style="--card-mood-color:${escapeText(letter.customMoodColor)}"` : ''}>${escapeText(letter.mood === 'Custom' ? (letter.customMoodName || 'Custom') : (letter.mood || 'Unsent'))}</span>
       ${memoryHasContent(letter.memory) ? `<span class="memory-badge">✦ memory</span>` : ''}
       <h3>${escapeText(letter.title || 'Untitled feeling')}</h3>
       <p class="card-preview">${escapeText(letter.body)}</p>
@@ -334,6 +352,10 @@ function safeFilename(value) {
 
 document.querySelectorAll('.mood').forEach(button => {
   button.addEventListener('click', () => { setMood(button.dataset.mood); revealLine(); });
+});
+
+customMoodColor.addEventListener('input', () => {
+  if (selectedMood === 'Custom') setMood('Custom');
 });
 
 document.querySelector('#new-line').addEventListener('click', revealLine);
@@ -420,6 +442,10 @@ form.addEventListener('submit', async event => {
     body,
     createdAt: new Date().toISOString()
   };
+  if (selectedMood === 'Custom') {
+    letter.customMoodName = customMoodName.value.trim();
+    letter.customMoodColor = selectedMoodColor || customMoodColor.value;
+  }
   if (memoryHasContent(memory)) letter.memory = memory;
   const nextLetters = editingLetterId ? letters.map(item => item.id === id ? { ...item, ...letter, createdAt: existingLetter.createdAt } : item) : [letter, ...letters];
   if (saveLetters(nextLetters)) {
@@ -463,6 +489,9 @@ lettersGrid.addEventListener('click', async event => {
     titleInput.value = letter.title || '';
     bodyInput.value = letter.body || '';
     setMood(letter.mood || 'Longing');
+    customMoodName.value = letter.customMoodName || '';
+    customMoodColor.value = letter.customMoodColor || '#dca0aa';
+    if (letter.mood === 'Custom') setMood('Custom');
     loadMemoryFields(letter);
     formMessage.textContent = 'Editing this letter. Keep it again when you are ready.';
     updateWordCount();
@@ -479,7 +508,8 @@ lettersGrid.addEventListener('click', async event => {
     }
   }
   if (button.dataset.action === 'download') {
-    const content = `${letter.title || 'Untitled feeling'}\nMood: ${letter.mood}\nDate: ${formatDate(letter.createdAt)}\n\n${letter.body}${memoryExportText(letter)}`;
+    const moodLabel = letter.mood === 'Custom' && letter.customMoodName ? `Custom — ${letter.customMoodName}` : letter.mood;
+    const content = `${letter.title || 'Untitled feeling'}\nMood: ${moodLabel}\nDate: ${formatDate(letter.createdAt)}\n\n${letter.body}${memoryExportText(letter)}`;
     downloadText(`${safeFilename(letter.title)}.txt`, content);
   }
 });
@@ -490,7 +520,10 @@ document.querySelector('#download-all').addEventListener('click', () => {
     showToast('There are no letters to export yet.');
     return;
   }
-  const content = letters.map((letter, index) => `${index + 1}. ${letter.title || 'Untitled feeling'}\nMood: ${letter.mood}\nDate: ${formatDate(letter.createdAt)}\n\n${letter.body}${memoryExportText(letter)}`).join('\n\n----------------------------------------\n\n');
+  const content = letters.map((letter, index) => {
+    const moodLabel = letter.mood === 'Custom' && letter.customMoodName ? `Custom — ${letter.customMoodName}` : letter.mood;
+    return `${index + 1}. ${letter.title || 'Untitled feeling'}\nMood: ${moodLabel}\nDate: ${formatDate(letter.createdAt)}\n\n${letter.body}${memoryExportText(letter)}`;
+  }).join('\n\n----------------------------------------\n\n');
   downloadText('midnight-letters-archive.txt', content);
   showToast('Your archive is ready to keep.');
 });
