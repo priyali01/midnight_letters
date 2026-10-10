@@ -86,22 +86,20 @@
           </div>
           <div class="mood-line-wrap"><p class="mood-line" id="mood-line" aria-live="polite"></p><button class="text-button" id="new-line" type="button">reveal a line <span>↗</span></button></div>
         </div>
+        <div class="writing-memory-layout">
         <div class="body-field">
           <label for="letter-body">YOUR WORDS <span>— TAKE YOUR TIME</span></label>
           <textarea id="letter-body" name="body" rows="9" maxlength="5000" placeholder="Dear you,&#10;&#10;I don't know if I'll ever say this out loud, but…" required></textarea>
           <div class="editor-meta"><span id="word-count">0 words</span><span>up to 5,000 characters</span></div>
         </div>
-        <details class="memory-panel">
-          <summary><span class="memory-summary-mark" aria-hidden="true">✦</span><span><strong>Make it a memory</strong><small>Keep a photograph, date, and a few extra words with this letter.</small></span><span class="memory-chevron" aria-hidden="true">⌄</span></summary>
+        <section class="memory-panel" aria-labelledby="memory-title">
+          <div class="memory-heading"><span class="memory-summary-mark" aria-hidden="true">✦</span><div><h3 id="memory-title">Make it a memory <span>(OPTIONAL)</span></h3><p>Keep a photograph, date, and a few extra words with this letter.</p></div></div>
           <div class="memory-fields">
             <div class="memory-photo-field">
-              <label for="memory-photo">PHOTOGRAPH <span>(OPTIONAL · 5 MB MAX)</span></label>
-              <input id="memory-photo" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
-              <p class="field-hint" id="memory-photo-hint">Images stay on this device and are not uploaded.</p>
-              <div class="memory-preview" id="memory-preview" hidden>
-                <img id="memory-preview-image" alt="Selected memory photograph preview" />
-                <button class="text-button" id="remove-memory-photo" type="button">Remove photograph</button>
-              </div>
+              <label for="memory-photo">ADD PHOTOGRAPHS <span>(UP TO 3 · 5 MB EACH)</span></label>
+              <input id="memory-photo" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple />
+              <p class="field-hint" id="memory-photo-hint">Optional. Images stay on this device and are not uploaded.</p>
+              <div class="memory-preview-list" id="memory-preview-list" aria-live="polite"></div>
             </div>
             <div class="memory-meta-fields">
               <div>
@@ -119,7 +117,8 @@
             </div>
           </div>
           <p class="form-message memory-message" id="memory-message" role="status" aria-live="polite"></p>
-        </details>
+        </section>
+        </div>
         <div class="form-actions"><button class="button button-save" type="submit"><span>Keep this letter</span><span class="save-arrow" aria-hidden="true">↗</span></button><button class="text-button" id="clear-letter" type="button">Start over</button></div>
         <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
       </form>

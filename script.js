@@ -30,9 +30,7 @@ const letterSearch = document.querySelector('#letter-search');
 const toast = document.querySelector('#toast');
 const memoryPanel = document.querySelector('.memory-panel');
 const memoryPhoto = document.querySelector('#memory-photo');
-const memoryPreview = document.querySelector('#memory-preview');
-const memoryPreviewImage = document.querySelector('#memory-preview-image');
-const removeMemoryPhoto = document.querySelector('#remove-memory-photo');
+const memoryPreviewList = document.querySelector('#memory-preview-list');
 const memoryPhotoHint = document.querySelector('#memory-photo-hint');
 const memoryDate = document.querySelector('#memory-date');
 const memoryCaption = document.querySelector('#memory-caption');
@@ -41,8 +39,9 @@ const memoryMessage = document.querySelector('#memory-message');
 let selectedMood = 'Longing';
 let toastTimer;
 let editingLetterId = null;
-let selectedPhoto = null;
-let selectedPhotoUrl = null;
+let selectedPhotos = [];
+let selectedPhotoUrls = [];
+let photosChanged = false;
 
 function openMemoryDatabase() {
   return new Promise((resolve, reject) => {
@@ -69,6 +68,24 @@ async function storePhoto(letterId, file) {
   database.close();
 }
 
+function memoryImageIds(memory) {
+  if (!memory) return [];
+  return Array.isArray(memory.imageIds) ? memory.imageIds : (memory.imageId ? [memory.imageId] : []);
+}
+
+async function storePhotos(letterId, files) {
+  const database = await openMemoryDatabase();
+  await Promise.all(files.map((file, index) => new Promise((resolve, reject) => {
+    const request = database.transaction(MEMORY_STORE_NAME, 'readwrite')
+      .objectStore(MEMORY_STORE_NAME)
+      .put(file, `${letterId}-${index}`);
+    request.onsuccess = resolve;
+    request.onerror = () => reject(request.error || new Error('Could not save photograph.'));
+  })));
+  database.close();
+  return files.map((file, index) => `${letterId}-${index}`);
+}
+
 async function loadPhoto(letterId) {
   const database = await openMemoryDatabase();
   const photo = await new Promise((resolve, reject) => {
@@ -80,6 +97,21 @@ async function loadPhoto(letterId) {
   });
   database.close();
   return photo;
+}
+
+async function loadPhotos(imageIds) {
+  return Promise.all(imageIds.map(async imageId => {
+    const database = await openMemoryDatabase();
+    const photo = await new Promise((resolve, reject) => {
+      const request = database.transaction(MEMORY_STORE_NAME, 'readonly')
+        .objectStore(MEMORY_STORE_NAME)
+        .get(imageId);
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error || new Error('Could not load photograph.'));
+    });
+    database.close();
+    return { imageId, photo };
+  }));
 }
 
 async function removePhoto(letterId) {
@@ -98,35 +130,40 @@ async function removePhoto(letterId) {
   }
 }
 
-function clearPhotoPreview() {
-  if (selectedPhotoUrl) URL.revokeObjectURL(selectedPhotoUrl);
-  selectedPhotoUrl = null;
-  selectedPhoto = null;
-  memoryPhoto.value = '';
-  memoryPreview.hidden = true;
-  memoryPreviewImage.removeAttribute('src');
+async function removePhotos(imageIds) {
+  await Promise.all(imageIds.map(imageId => removePhoto(imageId)));
 }
 
-function setPhotoPreview(file) {
-  if (selectedPhotoUrl) URL.revokeObjectURL(selectedPhotoUrl);
-  selectedPhoto = file;
-  selectedPhotoUrl = URL.createObjectURL(file);
-  memoryPreviewImage.src = selectedPhotoUrl;
-  memoryPreview.hidden = false;
+function clearPhotoPreview() {
+  selectedPhotoUrls.forEach(url => URL.revokeObjectURL(url));
+  selectedPhotoUrls = [];
+  selectedPhotos = [];
+  photosChanged = true;
+  memoryPhoto.value = '';
+  memoryPreviewList.innerHTML = '';
+}
+
+function renderPhotoPreviews() {
+  selectedPhotoUrls.forEach(url => URL.revokeObjectURL(url));
+  selectedPhotoUrls = selectedPhotos.map(file => URL.createObjectURL(file));
+  memoryPreviewList.innerHTML = selectedPhotos.map((file, index) => `
+    <div class="memory-preview" data-photo-index="${index}">
+      <img src="${selectedPhotoUrls[index]}" alt="Selected memory photograph ${index + 1} preview" />
+      <button class="text-button" data-remove-photo="${index}" type="button">Remove</button>
+    </div>`).join('');
 }
 
 function memoryHasContent(memory) {
-  return Boolean(memory && (memory.imageId || memory.date || memory.caption || memory.poem));
+  return Boolean(memory && (memoryImageIds(memory).length || memory.date || memory.caption || memory.poem));
 }
 
 function memoryExportText(letter) {
   const memory = letter.memory;
   if (!memoryHasContent(memory)) return '';
-  return `\n\nMEMORY${memory.date ? `\nMemory date: ${memory.date}` : ''}${memory.caption ? `\nCaption: ${memory.caption}` : ''}${memory.poem ? `\nPoem or quote:\n${memory.poem}` : ''}${memory.imageId ? '\nPhotograph: saved on this device' : ''}\n`;
+  return `\n\nMEMORY${memory.date ? `\nMemory date: ${memory.date}` : ''}${memory.caption ? `\nCaption: ${memory.caption}` : ''}${memory.poem ? `\nPoem or quote:\n${memory.poem}` : ''}${memoryImageIds(memory).length ? `\nPhotographs: ${memoryImageIds(memory).length} saved on this device` : ''}\n`;
 }
 
 function resetMemoryFields() {
-  memoryPanel.open = false;
   clearPhotoPreview();
   memoryDate.value = '';
   memoryCaption.value = '';
@@ -137,14 +174,18 @@ function resetMemoryFields() {
 
 function loadMemoryFields(letter) {
   const memory = letter.memory || {};
-  memoryPanel.open = memoryHasContent(memory);
   memoryDate.value = memory.date || '';
   memoryCaption.value = memory.caption || '';
   memoryPoem.value = memory.poem || '';
   clearPhotoPreview();
-  if (memory.imageId) {
-    loadPhoto(memory.imageId).then(photo => {
-      if (photo && editingLetterId === letter.id) setPhotoPreview(photo);
+  photosChanged = false;
+  const imageIds = memoryImageIds(memory);
+  if (imageIds.length) {
+    loadPhotos(imageIds).then(photos => {
+      if (editingLetterId !== letter.id) return;
+      selectedPhotos = photos.filter(item => item.photo).map(item => item.photo);
+      photosChanged = false;
+      renderPhotoPreviews();
     }).catch(() => {
       memoryMessage.textContent = 'This photograph is no longer available, but the rest of the memory is safe.';
     });
@@ -255,17 +296,21 @@ function renderLetters() {
       <div class="memory-card-content" data-memory-for="${escapeText(letter.id)}">${letter.memory && (letter.memory.date || letter.memory.caption || letter.memory.poem) ? `<div class="memory-text">${letter.memory.date ? `<time>${escapeText(letter.memory.date)}</time>` : ''}${letter.memory.caption ? `<p class="memory-caption">${escapeText(letter.memory.caption)}</p>` : ''}${letter.memory.poem ? `<blockquote>${escapeText(letter.memory.poem)}</blockquote>` : ''}</div>` : ''}</div>
       <div class="card-footer"><span>${formatDate(letter.createdAt)}</span><div class="card-actions"><button type="button" data-action="read" aria-expanded="false">Read</button><button type="button" data-action="edit" data-id="${escapeText(letter.id)}">Edit</button><button type="button" data-action="download" data-id="${escapeText(letter.id)}">Download</button><button type="button" data-action="delete" data-id="${escapeText(letter.id)}">Delete</button></div></div>`;
     lettersGrid.appendChild(card);
-    if (letter.memory && letter.memory.imageId) hydrateMemoryPhoto(card, letter);
+    if (memoryImageIds(letter.memory).length) hydrateMemoryPhoto(card, letter);
   });
 }
 
 async function hydrateMemoryPhoto(card, letter) {
   try {
-    const photo = await loadPhoto(letter.memory.imageId);
-    if (!photo || !card.isConnected) return;
+    const photos = await loadPhotos(memoryImageIds(letter.memory));
+    if (!card.isConnected) return;
     const content = card.querySelector('.memory-card-content');
-    const url = URL.createObjectURL(photo);
-    content.innerHTML = `<figure class="memory-photo-card"><img src="${url}" alt="Photograph saved with ${escapeText(letter.title || 'this letter')}" /><figcaption>${escapeText(letter.memory.caption || 'A moment worth keeping')}</figcaption></figure>`;
+    const availablePhotos = photos.filter(item => item.photo);
+    if (!availablePhotos.length) {
+      card.classList.add('memory-photo-missing');
+      return;
+    }
+    content.innerHTML = `${availablePhotos.map((item, index) => `<figure class="memory-photo-card"><img src="${URL.createObjectURL(item.photo)}" alt="Photograph ${index + 1} saved with ${escapeText(letter.title || 'this letter')}" /></figure>`).join('')}${letter.memory.caption ? `<p class="memory-caption">${escapeText(letter.memory.caption)}</p>` : ''}`;
   } catch (error) {
     card.classList.add('memory-photo-missing');
   }
@@ -303,23 +348,37 @@ bodyInput.addEventListener('input', updateWordCount);
 letterSearch.addEventListener('input', renderLetters);
 
 memoryPhoto.addEventListener('change', () => {
-  const file = memoryPhoto.files[0];
-  if (!file) return;
-  if (!file.type.startsWith('image/')) {
-    clearPhotoPreview();
-    memoryMessage.textContent = 'Please choose an image file.';
+  const files = [...memoryPhoto.files];
+  if (!files.length) return;
+  if (files.length > 3) {
+    memoryMessage.textContent = 'Choose up to three photographs.';
+    memoryPhoto.value = '';
     return;
   }
-  if (file.size > MAX_PHOTO_SIZE) {
+  if (files.some(file => !file.type.startsWith('image/'))) {
     clearPhotoPreview();
-    memoryMessage.textContent = 'That photograph is larger than 5 MB. Please choose a smaller image.';
+    memoryMessage.textContent = 'Please choose image files only.';
+    return;
+  }
+  if (files.some(file => file.size > MAX_PHOTO_SIZE)) {
+    clearPhotoPreview();
+    memoryMessage.textContent = 'Each photograph must be smaller than 5 MB.';
     return;
   }
   memoryMessage.textContent = '';
-  setPhotoPreview(file);
+  selectedPhotos = files;
+  photosChanged = true;
+  renderPhotoPreviews();
 });
 
-removeMemoryPhoto.addEventListener('click', clearPhotoPreview);
+memoryPreviewList.addEventListener('click', event => {
+  const button = event.target.closest('[data-remove-photo]');
+  if (!button) return;
+  selectedPhotos.splice(Number(button.dataset.removePhoto), 1);
+  photosChanged = true;
+  renderPhotoPreviews();
+  if (!selectedPhotos.length) memoryPhoto.value = '';
+});
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
@@ -340,17 +399,18 @@ form.addEventListener('submit', async event => {
     caption: memoryCaption.value.trim(),
     poem: memoryPoem.value.trim()
   };
-  if (selectedPhoto) {
+  const previousImageIds = memoryImageIds(previousMemory);
+  if (selectedPhotos.length) {
     try {
-      await storePhoto(id, selectedPhoto);
-      memory.imageId = id;
+      memory.imageIds = await storePhotos(id, selectedPhotos);
     } catch (error) {
-      delete memory.imageId;
-      memoryMessage.textContent = 'The letter was saved, but the photograph could not be kept in this browser.';
+      delete memory.imageIds;
+      memoryMessage.textContent = 'The letter was saved, but the photographs could not be kept in this browser.';
     }
-  } else if (!memoryPreview.hidden && previousMemory.imageId) {
-    memory.imageId = previousMemory.imageId;
-  } else if (!memoryPanel.open || memoryPreview.hidden) {
+  } else if (previousImageIds.length && editingLetterId && !photosChanged) {
+    memory.imageIds = previousImageIds;
+  } else {
+    delete memory.imageIds;
     delete memory.imageId;
   }
   const letter = {
@@ -363,7 +423,7 @@ form.addEventListener('submit', async event => {
   if (memoryHasContent(memory)) letter.memory = memory;
   const nextLetters = editingLetterId ? letters.map(item => item.id === id ? { ...item, ...letter, createdAt: existingLetter.createdAt } : item) : [letter, ...letters];
   if (saveLetters(nextLetters)) {
-    if (editingLetterId && previousMemory.imageId && !memory.imageId) await removePhoto(id);
+    if (editingLetterId && previousImageIds.length && !memory.imageIds) await removePhotos(previousImageIds);
     form.reset();
     editingLetterId = null;
     resetMemoryFields();

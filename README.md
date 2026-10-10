@@ -14,7 +14,7 @@ Midnight Letters is a small, responsive writing space for unsent letters, privat
 - **Download a letter:** export any saved letter as a `.txt` file.
 - **Export all:** download the whole archive as a text file.
 - **Delete letters:** remove individual letters from the local archive.
-- **Make it a memory:** optionally attach one local photograph, a date, caption, and poem or quote to a letter. Memories can be edited and are included in text exports.
+- **Make it a memory:** optionally attach up to three local photographs, a date, caption, and poem or quote to a letter. Memories can be edited and are included in text exports.
 - **Responsive design:** layouts adapt to desktop and mobile screens.
 - **Accessibility basics:** semantic sections, form labels, visible keyboard focus, reduced-motion support, and live status messages.
 
