@@ -41,6 +41,8 @@ function setMood(mood) {
 function revealLine() {
   const options = moodLines[selectedMood].filter(line => line !== moodLine.textContent);
   moodLine.textContent = options[Math.floor(Math.random() * options.length)];
+  moodLine.classList.remove('line-reveal');
+  requestAnimationFrame(() => moodLine.classList.add('line-reveal'));
 }
 
 function loadLetters() {
