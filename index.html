@@ -91,6 +91,35 @@
           <textarea id="letter-body" name="body" rows="9" maxlength="5000" placeholder="Dear you,&#10;&#10;I don't know if I'll ever say this out loud, but…" required></textarea>
           <div class="editor-meta"><span id="word-count">0 words</span><span>up to 5,000 characters</span></div>
         </div>
+        <details class="memory-panel">
+          <summary><span class="memory-summary-mark" aria-hidden="true">✦</span><span><strong>Make it a memory</strong><small>Keep a photograph, date, and a few extra words with this letter.</small></span><span class="memory-chevron" aria-hidden="true">⌄</span></summary>
+          <div class="memory-fields">
+            <div class="memory-photo-field">
+              <label for="memory-photo">PHOTOGRAPH <span>(OPTIONAL · 5 MB MAX)</span></label>
+              <input id="memory-photo" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+              <p class="field-hint" id="memory-photo-hint">Images stay on this device and are not uploaded.</p>
+              <div class="memory-preview" id="memory-preview" hidden>
+                <img id="memory-preview-image" alt="Selected memory photograph preview" />
+                <button class="text-button" id="remove-memory-photo" type="button">Remove photograph</button>
+              </div>
+            </div>
+            <div class="memory-meta-fields">
+              <div>
+                <label for="memory-date">MEMORY DATE <span>(OPTIONAL)</span></label>
+                <input id="memory-date" type="date" />
+              </div>
+              <div>
+                <label for="memory-caption">CAPTION <span>(OPTIONAL)</span></label>
+                <input id="memory-caption" type="text" maxlength="140" placeholder="A small detail worth keeping…" />
+              </div>
+              <div class="memory-poem-field">
+                <label for="memory-poem">POEM OR FAVOURITE QUOTE <span>(OPTIONAL)</span></label>
+                <textarea id="memory-poem" rows="3" maxlength="500" placeholder="A line that belongs beside this memory…"></textarea>
+              </div>
+            </div>
+          </div>
+          <p class="form-message memory-message" id="memory-message" role="status" aria-live="polite"></p>
+        </details>
         <div class="form-actions"><button class="button button-save" type="submit"><span>Keep this letter</span><span class="save-arrow" aria-hidden="true">↗</span></button><button class="text-button" id="clear-letter" type="button">Start over</button></div>
         <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
       </form>

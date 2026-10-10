@@ -14,6 +14,7 @@ Midnight Letters is a small, responsive writing space for unsent letters, privat
 - **Download a letter:** export any saved letter as a `.txt` file.
 - **Export all:** download the whole archive as a text file.
 - **Delete letters:** remove individual letters from the local archive.
+- **Make it a memory:** optionally attach one local photograph, a date, caption, and poem or quote to a letter. Memories can be edited and are included in text exports.
 - **Responsive design:** layouts adapt to desktop and mobile screens.
 - **Accessibility basics:** semantic sections, form labels, visible keyboard focus, reduced-motion support, and live status messages.
 
@@ -32,11 +33,11 @@ For a local development server, you can also use the VS Code **Live Server** ext
 - HTML5
 - CSS3
 - Vanilla JavaScript
-- Browser `localStorage` and Blob download APIs
+- Browser `localStorage`, IndexedDB, and Blob download APIs
 
 ## Privacy note
 
-Letters are stored in the current browser's local storage. This project does not send letters to a server (the page only loads fonts from Google Fonts). Anyone with access to the same browser profile may be able to access them, and clearing browser site data may remove them. Use **Export all letters** to keep a backup. This is a personal journaling demo, not a secure vault.
+Letters and memory text are stored in the current browser's local storage. Memory photographs are stored as image blobs in this browser's IndexedDB and are never uploaded. This project does not send letters or photographs to a server (the page only loads fonts from Google Fonts). Anyone with access to the same browser profile may be able to access them, and clearing browser site data may remove them. Use **Export archive** to keep a text backup; photographs are not included in text exports. This is a personal journaling demo, not a secure vault.
 
 ## GitHub Copilot challenge
 
